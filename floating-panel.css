@@ -1,0 +1,340 @@
+/* ============================================================
+   floating-panel.css — Styling cho Auto-Pilot Control Center
+   ChatGPT Script Saver (Dark Theme OpenAI)
+   ============================================================ */
+
+#script-saver-root {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ----- Panel Chính ----- */
+.ssp-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  width: 350px;
+  background: #181818;
+  border: 1px solid #333333;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+  z-index: 999998;
+  font-size: 13px;
+  color: #ececec;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ssp-panel.ssp-hidden-panel {
+  display: none !important;
+}
+
+/* ----- Header ----- */
+.ssp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #222222;
+  border-bottom: 1px solid #333333;
+  cursor: grab;
+  user-select: none;
+}
+
+.ssp-header:active {
+  cursor: grabbing;
+}
+
+.ssp-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ssp-icon {
+  font-size: 16px;
+}
+
+.ssp-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #10a37f;
+}
+
+.ssp-header-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ssp-btn-icon {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #888888;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.ssp-btn-icon:hover {
+  background: #333333;
+  color: #ffffff;
+}
+
+.ssp-btn-close:hover {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* ----- Body ----- */
+.ssp-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ssp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ssp-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ssp-label-row label,
+.ssp-form-group label,
+.ssp-form-col label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #aaaaaa;
+}
+
+.ssp-btn-link {
+  background: none;
+  border: none;
+  color: #10a37f;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.ssp-btn-link:hover {
+  color: #1a7f64;
+}
+
+.ssp-input,
+.ssp-textarea {
+  width: 100%;
+  padding: 7px 10px;
+  background: #252525;
+  border: 1px solid #383838;
+  border-radius: 6px;
+  color: #ececec;
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.ssp-input:focus,
+.ssp-textarea:focus {
+  border-color: #10a37f;
+}
+
+.ssp-textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+/* ----- Checkbox Dàn ý ----- */
+.ssp-checkbox-row {
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.ssp-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #cccccc;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.ssp-checkbox-label:hover {
+  color: #ffffff;
+}
+
+.ssp-checkbox {
+  accent-color: #10a37f;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.ssp-form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.ssp-form-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ----- Thanh tiến trình (Progress Box) ----- */
+.ssp-progress-box {
+  background: #222222;
+  border: 1px solid #2e2e2e;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.ssp-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: #10a37f;
+  margin-bottom: 6px;
+}
+
+.ssp-progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: #333333;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.ssp-progress-bar-fill {
+  height: 100%;
+  background: #10a37f;
+  transition: width 0.3s ease;
+}
+
+.ssp-status-msg {
+  font-size: 11px;
+  color: #888888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ----- Nút bấm điều khiển ----- */
+.ssp-controls-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ssp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  box-sizing: border-box;
+}
+
+.ssp-btn-primary {
+  background: #10a37f;
+  color: #ffffff;
+  border-color: #10a37f;
+  flex: 1;
+}
+
+.ssp-btn-primary:hover {
+  background: #0d8a6b;
+}
+
+.ssp-btn-secondary {
+  background: #2a2a2a;
+  color: #ececec;
+  border-color: #383838;
+  flex: 1;
+}
+
+.ssp-btn-secondary:hover {
+  background: #333333;
+}
+
+.ssp-btn-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.ssp-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* ----- Mini Bubble ----- */
+.ssp-mini-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #10a37f;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999997;
+  box-shadow: 0 4px 18px rgba(16, 163, 127, 0.5);
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.ssp-mini-bubble:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(16, 163, 127, 0.7);
+}
+
+.ssp-mini-bubble.hidden {
+  display: none !important;
+}
+
+.ssp-bubble-icon {
+  font-size: 22px;
+}
+
+.ssp-bubble-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #212121;
+  color: #10a37f;
+  border: 1px solid #10a37f;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 6px;
+}

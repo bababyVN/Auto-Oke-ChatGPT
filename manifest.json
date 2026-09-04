@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Script Saver",
+  "version": "1.0.0",
+  "description": "Tự động lưu và xuất kịch bản từ ChatGPT — lọc từ khóa, xuất file .txt theo tiêu đề",
+
+  "permissions": [
+    "storage",
+    "downloads",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "https://chatgpt.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": [
+        "utils/dom-selectors.js",
+        "utils/text-filter.js",
+        "utils/storage-helper.js",
+        "content.js",
+        "floating-panel.js"
+      ],
+      "css": ["floating-panel.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

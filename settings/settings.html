@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cài đặt bộ lọc — ChatGPT Script Saver</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <header class="settings-header">
+      <div class="header-title-area">
+        <h1>⚙ Cài đặt bộ lọc kịch bản</h1>
+        <p class="subtitle">Tùy chỉnh danh sách từ khóa loại bỏ, biểu thức chính quy (Regex) và định dạng xuất kịch bản.</p>
+      </div>
+      <div class="header-action-area">
+        <button type="button" id="btn-load-preset" class="btn btn-accent" title="Nạp sẵn danh sách từ khóa kịch bản chuẩn">
+          ⚡ Nạp bộ lọc kịch bản mẫu (Preset)
+        </button>
+      </div>
+    </header>
+
+    <main class="settings-main">
+      <!-- Section 1: Từ khóa cần loại bỏ -->
+      <section class="settings-section">
+        <div class="section-header">
+          <h2>1. Từ khóa cần loại bỏ</h2>
+          <span id="keyword-count-badge" class="badge">0 từ khóa</span>
+        </div>
+        <p class="section-desc">
+          Các câu chào hỏi của AI, đánh dấu phân đoạn (Part 1, Part 2), lệnh điều khiển (OKE x12) hoặc thông báo trạng thái (đã hoàn thành) sẽ bị loại bỏ khi xuất kịch bản.
+        </p>
+
+        <!-- Form thêm từ khóa mới -->
+        <div class="add-keyword-form">
+          <input 
+            type="text" 
+            id="input-new-keyword" 
+            class="form-control" 
+            placeholder="Nhập từ khóa hoặc Regex (ví dụ: OKE\\s*x\\d+, Part1, đã hoàn thành...)"
+          >
+          <label class="checkbox-label" title="Đánh dấu nếu đây là biểu thức chính quy (Regular Expression)">
+            <input type="checkbox" id="check-is-regex">
+            <span>Regex</span>
+          </label>
+          <button type="button" id="btn-add-keyword" class="btn btn-primary">
+            + Thêm
+          </button>
+        </div>
+
+        <!-- Danh sách từ khóa hiện tại -->
+        <div id="keywords-list" class="keywords-list">
+          <!-- Các thẻ từ khóa sẽ được render tại đây -->
+        </div>
+      </section>
+
+      <!-- Section 2: Chế độ lọc -->
+      <section class="settings-section">
+        <div class="section-header">
+          <h2>2. Chế độ lọc từ khóa</h2>
+        </div>
+        <p class="section-desc">
+          Chọn cách thức xử lý nội dung khi phát hiện từ khóa trong văn bản kịch bản.
+        </p>
+
+        <div class="radio-group">
+          <label class="radio-card">
+            <input type="radio" name="filterMode" value="remove-line" id="mode-remove-line">
+            <span class="custom-radio"></span>
+            <div class="radio-info">
+              <span class="radio-title">Xóa cả dòng chứa từ khóa</span>
+              <span class="radio-desc">Nếu một dòng chứa từ khóa, toàn bộ dòng đó sẽ bị loại bỏ khỏi kịch bản (khuyên dùng cho biên kịch).</span>
+            </div>
+          </label>
+
+          <label class="radio-card">
+            <input type="radio" name="filterMode" value="remove-keyword" id="mode-remove-keyword">
+            <span class="custom-radio"></span>
+            <div class="radio-info">
+              <span class="radio-title">Chỉ xóa từ khóa, giữ nguyên dòng</span>
+              <span class="radio-desc">Chỉ loại bỏ chính xác từ khóa đó, các nội dung khác trên cùng dòng vẫn được giữ lại.</span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Section 3: Định dạng xuất kịch bản mặc định -->
+      <section class="settings-section">
+        <div class="section-header">
+          <h2>3. Định dạng xuất kịch bản (.txt)</h2>
+        </div>
+        <p class="section-desc">
+          Chọn mẫu cấu trúc văn bản khi tải xuống tệp .txt.
+        </p>
+
+        <div class="radio-group">
+          <label class="radio-card">
+            <input type="radio" name="exportMode" value="voiceover" id="mode-voiceover" checked>
+            <span class="custom-radio"></span>
+            <div class="radio-info">
+              <span class="radio-title">Chế độ Lồng tiếng / Đọc AI (Voiceover / TTS)</span>
+              <span class="radio-desc">Thuần văn bản nội dung sạch sẽ, không metadata hay header kỹ thuật, đưa trực tiếp vào ElevenLabs/CapCut.</span>
+            </div>
+          </label>
+
+          <label class="radio-card">
+            <input type="radio" name="exportMode" value="master" id="mode-master">
+            <span class="custom-radio"></span>
+            <div class="radio-info">
+              <span class="radio-title">Chế độ Biên kịch đầy đủ (Master Script)</span>
+              <span class="radio-desc">Có Header Tiêu đề, Thể loại (MP), Tóm tắt (SHORT STORY SUMMARY), thời gian và phân đoạn rõ ràng.</span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Section 4: Tùy chọn khác -->
+      <section class="settings-section">
+        <div class="section-header">
+          <h2>4. Tùy chọn hệ thống</h2>
+        </div>
+
+        <div class="options-list">
+          <label class="checkbox-option">
+            <input type="checkbox" id="opt-auto-save">
+            <span class="custom-checkbox"></span>
+            <div class="option-text">
+              <span class="option-title">Tự động lưu kịch bản (Auto Save)</span>
+              <span class="option-desc">Tự động lưu và cập nhật kịch bản khi nhận được phản hồi mới từ ChatGPT.</span>
+            </div>
+          </label>
+
+          <label class="checkbox-option">
+            <input type="checkbox" id="opt-show-notification">
+            <span class="custom-checkbox"></span>
+            <div class="option-text">
+              <span class="option-title">Hiển thị thông báo nhỏ (Notification)</span>
+              <span class="option-desc">Hiển thị toast thông báo ở góc màn hình khi kịch bản được lọc và lưu thành công.</span>
+            </div>
+          </label>
+
+          <label class="checkbox-option">
+            <input type="checkbox" id="opt-remove-blank-lines">
+            <span class="custom-checkbox"></span>
+            <div class="option-text">
+              <span class="option-title">Xóa dòng trống thừa (Remove Blank Lines)</span>
+              <span class="option-desc">Tự động rút gọn các dòng trắng liên tiếp để văn bản kịch bản liền mạch và gọn gàng hơn.</span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Section 5: Thử nghiệm bộ lọc trực quan -->
+      <section class="settings-section">
+        <div class="section-header">
+          <h2>5. Thử nghiệm bộ lọc trực quan</h2>
+        </div>
+        <p class="section-desc">
+          Dán đoạn văn bản mẫu vào bên trái để kiểm tra tức thì kết quả làm sạch của bộ lọc hiện tại.
+        </p>
+
+        <div class="test-filter-area">
+          <div class="test-column">
+            <div class="test-label-row">
+              <label for="test-input">Văn bản gốc (ChatGPT):</label>
+              <button type="button" id="btn-sample-data" class="btn-link">Dán ví dụ kịch bản mẫu của tôi</button>
+            </div>
+            <textarea 
+              id="test-input" 
+              class="form-control test-textarea" 
+              placeholder="Dán nội dung hội thoại cần test vào đây..."
+              rows="8"
+            ></textarea>
+          </div>
+
+          <div class="test-action-row">
+            <button type="button" id="btn-test-filter" class="btn btn-accent">
+              ⚡ Áp dụng lọc ngay
+            </button>
+          </div>
+
+          <div class="test-column">
+            <div class="test-label-row">
+              <label for="test-output">Kết quả sau khi làm sạch:</label>
+              <span id="test-stats" class="test-stats-badge">0 từ | 0 dòng</span>
+            </div>
+            <textarea 
+              id="test-output" 
+              class="form-control test-textarea" 
+              placeholder="Kết quả sau khi lọc sẽ hiển thị tại đây..."
+              rows="8"
+              readonly
+            ></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Buttons -->
+      <footer class="settings-footer">
+        <button type="button" id="btn-reset" class="btn btn-secondary">
+          🔄 Reset mặc định
+        </button>
+        <button type="button" id="btn-save" class="btn btn-success">
+          💾 Lưu cài đặt
+        </button>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast thông báo -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive">
+    <span class="toast-icon">✓</span>
+    <span class="toast-message">Đã lưu cài đặt thành công!</span>
+  </div>
+
+  <!-- Nạp scripts -->
+  <script src="../utils/text-filter.js"></script>
+  <script src="../utils/storage-helper.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

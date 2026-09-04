@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT Script Saver</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1 class="brand-title">ChatGPT Script Saver</h1>
+          <span class="brand-sub">Auto-Pilot Kịch bản 12 phần</span>
+        </div>
+      </div>
+      <div id="autopilot-badge" class="badge-status-pill" title="Trạng thái Auto-Pilot">
+        <span class="dot active"></span>
+        <span class="badge-text" id="autopilot-badge-text">Auto-Pilot</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="autopilot" id="tab-btn-autopilot">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        Auto-Pilot
+      </button>
+      <button class="tab-btn" data-tab="history" id="tab-btn-history">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17 21 17 13 7 13 7 21"></polyline>
+          <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Lịch sử
+      </button>
+      <button class="tab-btn" data-tab="settings" id="tab-btn-settings">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        Cài đặt
+      </button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="tab-content-container">
+      <!-- 1. Tab Auto-Pilot -->
+      <section id="tab-autopilot" class="tab-pane active">
+        <!-- Cảnh báo tab -->
+        <div id="not-chatgpt-alert" class="alert-banner hidden">
+          <span>Vui lòng mở tab chatgpt.com để chạy Auto-Pilot</span>
+        </div>
+
+        <!-- Form thiết lập Auto-Pilot -->
+        <div class="conv-card">
+          <div class="conv-card-header">
+            <span class="conv-label">Kịch bản Auto-Pilot:</span>
+            <button type="button" id="btn-popup-sample" class="btn-link">Dán bài mẫu</button>
+          </div>
+          <textarea id="popup-input-content" class="filter-input" style="height: 100px; resize: vertical; margin-bottom: 8px;" placeholder="Dán nội dung kịch bản (Dòng 1: Tiêu đề — Các dòng tiếp: Cốt truyện / Tóm tắt)..."></textarea>
+          
+          <!-- Checkbox Dàn ý -->
+          <div style="margin-bottom: 8px;">
+            <label for="popup-checkbox-outline" style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #aaaaaa; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="popup-checkbox-outline" style="accent-color: #10a37f; width: 14px; height: 14px; cursor: pointer;">
+              <span>Có dàn ý (Gửi OKE 1, không lưu dàn ý)</span>
+            </label>
+          </div>
+          
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <div style="flex: 1;">
+              <span class="mode-label">Số phần:</span>
+              <input type="number" id="popup-input-parts" class="filter-input" value="12" min="1" max="50">
+            </div>
+            <div style="flex: 1;">
+              <span class="mode-label">Lệnh tiếp theo:</span>
+              <input type="text" id="popup-input-pattern" class="filter-input" value="OKE {n}">
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div id="popup-progress-box" class="preview-wrapper" style="display: none; padding: 8px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+              <span id="popup-progress-text" style="color: var(--accent); font-weight: 600;">Part 0/12</span>
+              <span id="popup-progress-percent">0%</span>
+            </div>
+            <div style="height: 4px; background: #333; border-radius: 2px; overflow: hidden;">
+              <div id="popup-progress-bar" style="height: 100%; width: 0%; background: var(--accent); transition: width 0.3s;"></div>
+            </div>
+            <div id="popup-status-msg" style="font-size: 10px; color: #888; margin-top: 4px;">Đang chuẩn bị...</div>
+          </div>
+
+          <div class="actions-row">
+            <button type="button" id="btn-popup-start" class="btn btn-primary">
+              🚀 BẮT ĐẦU CHẠY AUTO
+            </button>
+            <button type="button" id="btn-popup-pause" class="btn btn-secondary" style="display: none;">
+              ⏸ Tạm dừng
+            </button>
+            <button type="button" id="btn-popup-stop" class="btn btn-danger" style="display: none;">
+              ⏹ Hủy
+            </button>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: var(--text-dim); text-align: center;">
+          💡 Hoặc sử dụng Widget nổi màu xanh góc màn hình trang ChatGPT để điều khiển tiện lợi hơn!
+        </div>
+      </section>
+
+      <!-- 2. Tab Lịch sử -->
+      <section id="tab-history" class="tab-pane">
+        <div class="history-search-box">
+          <div class="input-icon-wrapper">
+            <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="history-search-input" class="filter-input" placeholder="Tìm theo tiêu đề...">
+          </div>
+        </div>
+
+        <div class="history-stats-bar">
+          <span id="history-total-count" class="history-total-count">0 kịch bản đã xuất</span>
+          <button type="button" id="btn-refresh-history" class="btn-link">Làm mới</button>
+        </div>
+
+        <div id="history-list" class="history-list"></div>
+
+        <div id="history-empty" class="empty-state hidden">
+          <p class="empty-title">Chưa có kịch bản nào được xuất</p>
+          <p class="empty-desc">Khi Auto-Pilot chạy xong, kịch bản hoàn chỉnh sẽ được lưu và tải về máy tại đây.</p>
+        </div>
+      </section>
+
+      <!-- 3. Tab Cài đặt -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="settings-summary-card">
+          <h3 class="settings-title">Cấu hình ChatGPT Script Saver</h3>
+          <p class="settings-desc">Tùy chỉnh danh sách từ khóa loại bỏ và xem lại thiết lập Auto-Pilot.</p>
+          <button type="button" id="btn-open-settings" class="btn btn-primary btn-block">
+            Mở trang Cài đặt chi tiết
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast-message" class="toast hidden"></div>
+  </div>
+
+  <script src="../utils/text-filter.js"></script>
+  <script src="../utils/storage-helper.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

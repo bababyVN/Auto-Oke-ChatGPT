@@ -1,0 +1,116 @@
+<!-- 
+  Chạy file này trong trình duyệt để tạo icons
+  Mở file, click nút Download để tải 3 icon
+-->
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body style="background:#222;color:#fff;font-family:sans-serif;padding:40px">
+  <h2>ChatGPT Script Saver — Icon Generator</h2>
+  <p>Click từng nút để tải icon tương ứng, sau đó đặt vào thư mục <code>icons/</code></p>
+  <div style="display:flex;gap:30px;margin-top:20px;align-items:end">
+    <div>
+      <canvas id="c16" width="16" height="16"></canvas>
+      <br><button onclick="download('c16','icon16.png')">Download 16x16</button>
+    </div>
+    <div>
+      <canvas id="c48" width="48" height="48"></canvas>
+      <br><button onclick="download('c48','icon48.png')">Download 48x48</button>
+    </div>
+    <div>
+      <canvas id="c128" width="128" height="128"></canvas>
+      <br><button onclick="download('c128','icon128.png')">Download 128x128</button>
+    </div>
+  </div>
+
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const s = size;
+      const r = s * 0.15; // border radius ratio
+
+      // Background — rounded rect
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.lineTo(s - r, 0);
+      ctx.quadraticCurveTo(s, 0, s, r);
+      ctx.lineTo(s, s - r);
+      ctx.quadraticCurveTo(s, s, s - r, s);
+      ctx.lineTo(r, s);
+      ctx.quadraticCurveTo(0, s, 0, s - r);
+      ctx.lineTo(0, r);
+      ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fillStyle = '#10a37f';
+      ctx.fill();
+
+      // Document icon (white)
+      const pad = s * 0.22;
+      const docW = s * 0.45;
+      const docH = s * 0.56;
+      const dx = pad;
+      const dy = pad;
+      const fold = s * 0.12;
+
+      ctx.beginPath();
+      ctx.moveTo(dx, dy);
+      ctx.lineTo(dx + docW - fold, dy);
+      ctx.lineTo(dx + docW, dy + fold);
+      ctx.lineTo(dx + docW, dy + docH);
+      ctx.lineTo(dx, dy + docH);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.fill();
+
+      // Fold triangle
+      ctx.beginPath();
+      ctx.moveTo(dx + docW - fold, dy);
+      ctx.lineTo(dx + docW - fold, dy + fold);
+      ctx.lineTo(dx + docW, dy + fold);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.fill();
+
+      // Text lines on document
+      const lineY1 = dy + docH * 0.35;
+      const lineY2 = dy + docH * 0.55;
+      const lineY3 = dy + docH * 0.75;
+      const lineH = Math.max(1, s * 0.03);
+      ctx.fillStyle = '#10a37f';
+
+      ctx.fillRect(dx + s*0.06, lineY1, docW * 0.7, lineH);
+      ctx.fillRect(dx + s*0.06, lineY2, docW * 0.5, lineH);
+      ctx.fillRect(dx + s*0.06, lineY3, docW * 0.6, lineH);
+
+      // Save/bookmark icon (bottom-right)
+      const bx = s * 0.55;
+      const by = s * 0.45;
+      const bw = s * 0.25;
+      const bh = s * 0.35;
+
+      ctx.beginPath();
+      ctx.moveTo(bx, by);
+      ctx.lineTo(bx + bw, by);
+      ctx.lineTo(bx + bw, by + bh);
+      ctx.lineTo(bx + bw/2, by + bh * 0.7);
+      ctx.lineTo(bx, by + bh);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fill();
+    }
+
+    drawIcon('c16', 16);
+    drawIcon('c48', 48);
+    drawIcon('c128', 128);
+
+    function download(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
